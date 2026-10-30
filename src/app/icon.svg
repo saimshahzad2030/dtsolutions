@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+  <defs>
+    <linearGradient id="dtGradient" x1="18" y1="18" x2="110" y2="110" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#083B8A"/>
+      <stop offset="0.55" stop-color="#0B57D0"/>
+      <stop offset="1" stop-color="#1BAAF7"/>
+    </linearGradient>
+    <linearGradient id="warmGradient" x1="32" y1="84" x2="98" y2="42" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#F59E0B"/>
+      <stop offset="1" stop-color="#FF8A00"/>
+    </linearGradient>
+  </defs>
+  <rect width="128" height="128" rx="34" fill="#FFFDF7"/>
+  <rect x="16" y="16" width="96" height="96" rx="28" fill="url(#dtGradient)"/>
+  <path d="M40 36h20c18.8 0 34 15.2 34 34S78.8 104 60 104H40V36Z" fill="#FFFDF7" opacity=".18"/>
+  <path d="M38 38h18.5c17.4 0 31.5 14.1 31.5 31.5S73.9 101 56.5 101H38V38Zm16.8 15.3H52v32.4h2.8c8.8 0 16-7.3 16-16.2 0-9-7.2-16.2-16-16.2Z" fill="#FFFDF7"/>
+  <path d="M89 39h-9.8v48.4H89V39Z" fill="#FFFDF7"/>
+  <path d="M22 82c14.7 5.1 30.4 6.7 47 4.8 17.3-2 28.4-7.1 37-16.8" fill="none" stroke="url(#warmGradient)" stroke-width="9" stroke-linecap="round"/>
+</svg>

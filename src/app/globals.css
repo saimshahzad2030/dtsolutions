@@ -1,26 +1,409 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/* ------------------------------------------------------------------ */
+/* Design tokens                                                       */
+/* ------------------------------------------------------------------ */
+@theme {
+  /* Surfaces */
+  --color-ink: #050b1a;
+  --color-ink-2: #0a1430;
+  --color-ink-3: #12204a;
+  --color-cream: #fffdf7;
+  --color-paper: #f6f2e8;
+  --color-line: #e8e2d4;
+
+  /* Brand (from the existing DT Solutions palette) */
+  --color-brand: #0b57d0;
+  --color-brand-deep: #083b8a;
+  --color-sky: #1baaf7;
+  --color-amber: #f59e0b;
+  --color-flame: #ff8a00;
+
+  /* Text */
+  --color-heading: #0b1222;
+  --color-body: #334155;
+  --color-muted: #4b5568;
+
+  --font-display: var(--font-bricolage), ui-sans-serif, system-ui, sans-serif;
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-out-quart: cubic-bezier(0.25, 1, 0.5, 1);
+
+  --animate-float: float 9s ease-in-out infinite;
+  --animate-float-slow: float 13s ease-in-out infinite;
+  --animate-spin-slow: spin 60s linear infinite;
+  --animate-marquee: marquee 45s linear infinite;
+  --animate-pulse-ring: pulse-ring 2.4s var(--ease-out-quart) infinite;
+
+  --breakpoint-xs: 26rem;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+@keyframes float {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+  50% {
+    transform: translate3d(0, -14px, 0);
+  }
 }
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@keyframes marquee {
+  to {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+@keyframes pulse-ring {
+  0% {
+    transform: scale(0.8);
+    opacity: 0.7;
+  }
+  100% {
+    transform: scale(2.4);
+    opacity: 0;
+  }
+}
+@keyframes rise {
+  from {
+    transform: translate3d(0, 110%, 0);
+  }
+  to {
+    transform: translate3d(0, 0, 0);
+  }
+}
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 18px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes page-in {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 12px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes travel {
+  0% {
+    offset-distance: 0%;
+    opacity: 0;
+  }
+  10%,
+  90% {
+    opacity: 1;
+  }
+  100% {
+    offset-distance: 100%;
+    opacity: 0;
+  }
+}
+@keyframes bar {
+  0%,
+  100% {
+    transform: scaleY(var(--from, 0.4));
+  }
+  50% {
+    transform: scaleY(var(--to, 1));
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* ------------------------------------------------------------------ */
+/* Base                                                                */
+/* ------------------------------------------------------------------ */
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+  }
+  html:not(.lenis) {
+    scroll-behavior: smooth;
+  }
+  body {
+    background: var(--color-cream);
+    color: var(--color-body);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: clip;
+  }
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-display);
+    color: var(--color-heading);
+    letter-spacing: -0.025em;
+    text-wrap: balance;
+  }
+  p {
+    text-wrap: pretty;
+  }
+  [id] {
+    scroll-margin-top: 7rem;
+  }
+  ::selection {
+    background: color-mix(in oklab, var(--color-sky) 35%, transparent);
+  }
+  :focus-visible {
+    outline: 2px solid var(--color-sky);
+    outline-offset: 3px;
+  }
 }
+
+/* Lenis smooth scrolling */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+.lenis.lenis-stopped {
+  overflow: clip;
+}
+
+/* ------------------------------------------------------------------ */
+/* Utilities                                                           */
+/* ------------------------------------------------------------------ */
+@utility container-x {
+  width: 100%;
+  max-width: 82rem;
+  margin-inline: auto;
+  padding-inline: 1.25rem;
+  @media (width >= 40rem) {
+    padding-inline: 2rem;
+  }
+  @media (width >= 64rem) {
+    padding-inline: 2.5rem;
+  }
+}
+
+@utility text-gradient {
+  background: linear-gradient(100deg, #6cc8ff 0%, var(--color-sky) 35%, #8fb4ff 62%, var(--color-amber) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+@utility text-gradient-brand {
+  background: linear-gradient(100deg, var(--color-brand-deep) 0%, var(--color-brand) 45%, #0e86c9 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+@utility bg-grid {
+  background-image:
+    linear-gradient(to right, rgb(255 255 255 / 0.06) 1px, transparent 1px),
+    linear-gradient(to bottom, rgb(255 255 255 / 0.06) 1px, transparent 1px);
+  background-size: 64px 64px;
+}
+
+@utility bg-grid-light {
+  background-image:
+    linear-gradient(to right, rgb(11 87 208 / 0.07) 1px, transparent 1px),
+    linear-gradient(to bottom, rgb(11 87 208 / 0.07) 1px, transparent 1px);
+  background-size: 56px 56px;
+}
+
+@utility mask-radial {
+  mask-image: radial-gradient(ellipse at center, black 25%, transparent 72%);
+}
+
+@utility mask-fade-x {
+  mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent);
+}
+
+@utility glass {
+  background: rgb(255 255 255 / 0.06);
+  border: 1px solid rgb(255 255 255 / 0.12);
+  backdrop-filter: blur(16px) saturate(140%);
+  -webkit-backdrop-filter: blur(16px) saturate(140%);
+}
+
+/* ------------------------------------------------------------------ */
+/* Motion primitives                                                   */
+/* ------------------------------------------------------------------ */
+
+/* Page transition: replays whenever the route template remounts. */
+.page-enter {
+  animation: page-in 0.7s var(--ease-out-expo) both;
+}
+
+/* Headline: words rise out of a clipping mask (CSS only, paints before JS). */
+.word-mask {
+  display: inline-block;
+  overflow: clip;
+  vertical-align: bottom;
+  padding-bottom: 0.14em;
+  margin-bottom: -0.14em;
+}
+.word-mask > span {
+  display: inline-block;
+  animation: rise 1.1s var(--ease-out-expo) both;
+  animation-delay: calc(var(--i, 0) * 70ms + 80ms);
+}
+
+/* Staggered entrance for above-the-fold elements (CSS only, no JS). */
+.enter {
+  animation: fade-up 0.9s var(--ease-out-expo) both;
+  animation-delay: var(--d, 0ms);
+}
+
+/* Scroll reveal: toggled by <RevealObserver/>. Hidden only once JS is present. */
+.js [data-reveal] {
+  opacity: 0;
+  transform: translate3d(0, 28px, 0);
+  transition:
+    opacity 0.9s var(--ease-out-expo),
+    transform 1s var(--ease-out-expo);
+  transition-delay: var(--d, 0ms);
+}
+.js [data-reveal="fade"] {
+  transform: none;
+}
+.js [data-reveal="scale"] {
+  transform: scale(0.94);
+}
+.js [data-reveal="left"] {
+  transform: translate3d(-36px, 0, 0);
+}
+.js [data-reveal="right"] {
+  transform: translate3d(36px, 0, 0);
+}
+.js [data-reveal].is-in {
+  opacity: 1;
+  transform: none;
+}
+
+/* Animated gradient border used by highlight cards. */
+@property --angle {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
+}
+@keyframes border-spin {
+  to {
+    --angle: 360deg;
+  }
+}
+.border-glow {
+  position: relative;
+  isolation: isolate;
+}
+.border-glow::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  padding: 1.5px;
+  border-radius: inherit;
+  background: conic-gradient(
+    from var(--angle),
+    transparent 0deg,
+    var(--color-sky) 70deg,
+    var(--color-amber) 140deg,
+    transparent 200deg,
+    transparent 360deg
+  );
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  opacity: 0;
+  transition: opacity 0.5s var(--ease-out-quart);
+  pointer-events: none;
+  z-index: 1;
+}
+.border-glow:hover::before,
+.border-glow:focus-within::before,
+.border-glow[data-active="true"]::before {
+  opacity: 1;
+  animation: border-spin 4s linear infinite;
+}
+
+/* Cursor spotlight (coordinates set by <Spotlight/>). */
+.spotlight {
+  position: relative;
+  isolation: isolate;
+}
+.spotlight::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(
+    380px circle at var(--x, 50%) var(--y, 50%),
+    rgb(27 170 247 / 0.16),
+    transparent 50%
+  );
+  opacity: 0;
+  transition: opacity 0.4s;
+  pointer-events: none;
+  z-index: -1;
+}
+.spotlight:hover::after {
+  opacity: 1;
+}
+
+/* Buttons: light sweep on hover. */
+.btn-shine {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+.btn-shine::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(110deg, transparent 30%, rgb(255 255 255 / 0.32) 50%, transparent 70%);
+  transform: translateX(-120%);
+  transition: transform 0.8s var(--ease-out-expo);
+  pointer-events: none;
+}
+.btn-shine:hover::after {
+  transform: translateX(120%);
+}
+
+/* A dot that travels along a CSS motion path. */
+.traveller {
+  offset-rotate: 0deg;
+  animation: travel 3.2s var(--ease-out-quart) infinite;
+  animation-delay: var(--d, 0s);
+}
+
+.bar-anim {
+  transform-origin: bottom;
+  animation: bar 3.6s ease-in-out infinite;
+  animation-delay: var(--d, 0s);
+}
+
+/* ------------------------------------------------------------------ */
+/* Reduced motion                                                      */
+/* ------------------------------------------------------------------ */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    animation-delay: 0ms !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+  .js [data-reveal] {
+    opacity: 1;
+    transform: none;
+  }
+  .traveller {
+    display: none;
+  }
+}
+
